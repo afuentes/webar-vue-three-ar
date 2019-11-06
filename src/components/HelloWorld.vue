@@ -37,10 +37,9 @@ data () {
 	this.camera.up.set( 0, 0, 1 );
   this.camera.lookAt( new Three.Vector3( 0, 0, 0 ) );
   this.scene = new Three.Scene();
-  this.geometry = new Three.BoxGeometry(200, 200, 200);
+  this.geometry = new Three.BoxGeometry(1, 1, 1);
   this.material = new Three.MeshBasicMaterial({
-            color: 0xff0000,
-            wireframe: true
+            color: 0xff0000 
         });
   this.cube = new Three.Mesh(this.geometry, this.material);
   this.scene.add(this.cube);
@@ -55,7 +54,7 @@ data () {
   this.cube.rotation.x += 0.1;
   this.cube.rotation.y += 0.1;
   this.renderer.render(this.scene, this.camera);
-    
+  
   },methods: {
 
   } // end methods
