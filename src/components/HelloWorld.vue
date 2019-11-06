@@ -1,6 +1,6 @@
 <template>
   <div>
-     <canvas></canvas>
+     <canvas class="vue-canvas" ref="canvas" ></canvas>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ data () {
     geometry:null,
     material:null,
     renderer:null,
-    mesh:null,
+    cube:null,
     width: 0,
 		height: 0,
 		shaded: true,
@@ -42,15 +42,19 @@ data () {
             color: 0xff0000,
             wireframe: true
         });
-  this.mesh = new Three.Mesh(this.geometry, this.material);
-  this.scene.add(this.mesh);
+  this.cube = new Three.Mesh(this.geometry, this.material);
+  this.scene.add(this.cube);
 	this.renderer = new Three.WebGLRenderer({
 			alpha: true,
 			antialias: false,
 			canvas: this.$el.getElementsByTagName("canvas")[ 0 ]
 	});
 	this.renderer.setPixelRatio( window.devicePixelRatio );
-	this.renderer.setSize( this.width, this.height );
+  this.renderer.setSize( this.width, this.height );
+  
+  this.cube.rotation.x += 0.1;
+  this.cube.rotation.y += 0.1;
+  this.renderer.render(this.scene, this.camera);
     
   },methods: {
 
@@ -61,4 +65,10 @@ data () {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.vue-canvas {
+        width: 100%;
+        height: 100%;
+    }
+
 </style>
