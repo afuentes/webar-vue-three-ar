@@ -1,50 +1,60 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
-    <div v-html="renderer" />
+     <canvas class="layer3D"></canvas>
   </div>
 </template>
 
 <script>
-import * as THREE from 'three'
+import * as Three from 'three'
 
 export default {
-  name: 'HelloWorld',
-  props: {
+name: 'HelloWorld',
+props: {
     msg: String
-  },
+},
 data () {
     return {
-     isShow:false,
-     camera:null,
-     scene:null,
-     geometry:null,
-     material:null,
-     renderer:null,
+    isShow:false,
+    camera:null,
+    scene:null,
+    geometry:null,
+    material:null,
+    renderer:null,
+    mesh:null,
+    width: 0,
+		height: 0,
+		shaded: true,
+		zoom: 3
     }
   },
   mounted: function() {
+  
+  this.width = this.$el.offsetWidth;
+	this.height = this.$el.offsetHeight;
+	this.aspect = this.width / this.height;
 
+	this.camera = new Three.PerspectiveCamera( 45, this.aspect, 1, 1024 );
+	this.camera.position.set( this.zoom, this.zoom, this.zoom );
+	this.camera.up.set( 0, 0, 1 );
+  this.camera.lookAt( new Three.Vector3( 0, 0, 0 ) );
+  this.scene = new Three.Scene();
+  this.geometry = new Three.BoxGeometry(200, 200, 200);
+  this.material = new Three.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true
+        });
+  this.mesh = new Three.Mesh(this.geometry, this.material);
+  this.scene.add(this.mesh);
+	this.renderer = new Three.WebGLRenderer({
+			alpha: true,
+			antialias: false,
+			canvas: this.$el.getElementsByTagName("canvas")[ 0 ]
+	});
+	this.renderer.setPixelRatio( window.devicePixelRatio );
+	this.renderer.setSize( this.width, this.height );
+    
   },methods: {
-     onInit: function(){
-      this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
-      this.camera.position.z = 1;
- 
-      this.scene = new THREE.Scene();
- 
-      var geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-      var material = new THREE.MeshNormalMaterial();
- 
-      var mesh = new THREE.Mesh( geometry, material );
-      this.scene.add( mesh );
- 
-      this.renderer = new THREE.WebGLRenderer( { antialias: true } );
-      this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-     },
-     onRender: function(){
-
-     }
   } // end methods
 }
 

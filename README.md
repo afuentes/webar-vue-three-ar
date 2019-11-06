@@ -12,7 +12,7 @@ $ vue create webar-vue-three-ar
 
 ### Add three package 
 ```shell
-$ npm i three
+$ npm install three --save
 + three@0.110.0
 added 1 package from 1 contributor and audited 24354 packages in 37.925s
 found 0 vulnerabilities
