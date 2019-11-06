@@ -32,7 +32,6 @@ data () {
   this.width = this.$el.offsetWidth;
 	this.height = this.$el.offsetHeight;
 	this.aspect = this.width / this.height;
-
 	this.camera = new Three.PerspectiveCamera( 45, this.aspect, 1, 1024 );
 	this.camera.position.set( this.zoom, this.zoom, this.zoom );
 	this.camera.up.set( 0, 0, 1 );
