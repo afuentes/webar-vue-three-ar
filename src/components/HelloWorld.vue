@@ -2,7 +2,7 @@
   <div>
     <h1>{{ msg }}</h1>
     <div v-html="renderer" />
-  
+  </div>
 </template>
 
 <script>
