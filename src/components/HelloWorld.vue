@@ -1,6 +1,6 @@
 <template>
   <div>
-     <canvas class="layer3D"></canvas>
+     <canvas></canvas>
   </div>
 </template>
 
