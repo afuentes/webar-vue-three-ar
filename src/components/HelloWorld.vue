@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
-    <div v-html="renderer" >
-  </div>
+    <div v-html="renderer" />
+  
 </template>
 
 <script>
@@ -40,7 +40,7 @@ data () {
  
       this.renderer = new THREE.WebGLRenderer( { antialias: true } );
       this.renderer.setSize( window.innerWidth, window.innerHeight );
-      
+
      },
      onRender: function(){
 
