@@ -1,6 +1,6 @@
 <template>
   <div>
-     <canvas class="vue-canvas" ref="canvas" ></canvas>
+     <canvas class="vue-canvas" ></canvas>
   </div>
 </template>
 
