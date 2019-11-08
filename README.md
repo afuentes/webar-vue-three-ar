@@ -43,5 +43,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 See [Three JS ](https://threejs.org/).
 See [Three JS Package](https://www.npmjs.com/package/three).
 See [AR.js](https://github.com/google-ar/three.ar.js).
-See [WebXR ](https://github.com/immersive-web/webxr)
+See [WebXR ](https://github.com/immersive-web/webxr).
+See [Blog ](https://medium.com/@pulkit.16296/building-markerless-ar-for-web-using-three-ar-js-part-1-5eca95d545ec)
 
