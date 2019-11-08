@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+          <a-box position='0 0.5 0' material='color: yellow;'></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
   }
 }
 </script>
@@ -22,6 +25,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0px;
+  overflow: hidden;
 }
 </style>
