@@ -1,11 +1,16 @@
 <template>
-  <div>
-     <canvas class="vue-canvas" ></canvas>
+  <div class="vue-full" >
+                <a-scene arjs='sourceType: webcam; debugUIEnabled: false'>
+                    <a-anchor hit-testing-enabled="true">
+                        <a-entity position='0 0 0' scale='0.05 0.05 0.05' rotation='200 0 0' obj-model='obj: url(models/dog.obj); mtl: url(models/dog.mtl)'></a-entity>
+                        {/*<a-box position='0 0 0.5' material='opacity: 0.7; color: yellow;'></a-box>*/}
+                    </a-anchor>
+                    <a-camera-static preset="hiro" />
+                </a-scene>
   </div>
 </template>
 
 <script>
-import * as Three from 'three'
 
 export default {
 name: 'HelloWorld',
@@ -14,46 +19,10 @@ props: {
 },
 data () {
     return {
-    isShow:false,
-    camera:null,
-    scene:null,
-    geometry:null,
-    material:null,
-    renderer:null,
-    cube:null,
-    width: 0,
-		height: 0,
-		shaded: true,
-		zoom: 3
+    isShow:false
     }
   },
   mounted: function() {
-  
-  this.width = this.$el.offsetWidth;
-	this.height = this.$el.offsetHeight;
-	this.aspect = this.width / this.height;
-	this.camera = new Three.PerspectiveCamera(65, this.aspect, 1, 1024 );
-	this.camera.position.set( this.zoom, this.zoom, this.zoom );
-	this.camera.up.set( 0, 0, 1 );
-  this.camera.lookAt( new Three.Vector3( 0, 0, 0 ) );
-  this.scene = new Three.Scene();
-  this.geometry = new Three.BoxGeometry(1, 1, 1);
-  this.material = new Three.MeshBasicMaterial({
-            color: 0xff0000
-        });
-  this.cube = new Three.Mesh(this.geometry, this.material);
-  this.scene.add(this.cube);
-	this.renderer = new Three.WebGLRenderer({
-			alpha: true,
-			antialias: false,
-			canvas: this.$el.getElementsByTagName("canvas")[ 0 ]
-	});
-	this.renderer.setPixelRatio( window.devicePixelRatio );
-  this.renderer.setSize( this.width, this.height );
-  
-  this.cube.rotation.x += 0.3;
-  this.cube.rotation.y += 0.3;
-  this.renderer.render(this.scene, this.camera);
 
   },methods: {
 
@@ -65,7 +34,7 @@ data () {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.vue-canvas {
+.vue-full {
         width: 100%;
         height: 100%;
     }
