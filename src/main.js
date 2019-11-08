@@ -10,7 +10,8 @@ Vue.config.ignoredElements = [
   'a-box',
   'a-marker',
   'a-anchor',
-  'a-camera-static'
+  'a-camera-static',
+  'a-marker-camera'
 ]
 
 new Vue({
