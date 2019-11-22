@@ -15,6 +15,9 @@ $ vue create webar-vue-three-ar
 $ npm install --save three 
 + three@0.110.0
 added 1 package from 1 contributor and audited 24354 packages in 14.603s
+$ npm install --save webrtc-adapter
++ webrtc-adapter@7.3.0
+added 3 packages from 1 contributor and audited 24358 packages in 15.188s
 ```
 
 ### Add vue.config.js file to support https
