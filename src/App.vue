@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <WebAR/>>
+    <WebAR/>
   </div>
 </template>
 
