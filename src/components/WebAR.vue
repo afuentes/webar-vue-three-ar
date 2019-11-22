@@ -21,8 +21,6 @@ export default {
                     'video': {facingMode: 'environment'}
       },
       msg_status: '',
-      videoIn: null,
-      camBack:null
     }
   },
   mounted: function () {
@@ -73,7 +71,6 @@ export default {
   Log: function(msg){
       this.msg_status = this.msg_status +' '+msg 
   }
-
   } // end methods
 }
 </script> 
