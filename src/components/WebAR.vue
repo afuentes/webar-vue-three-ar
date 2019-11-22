@@ -1,8 +1,7 @@
 <template>
    <div class="box">
     <video ref="camera" autoPlay playsInline class="camera"></video> 
-      <canvas width="320" height="320" ref="canvasDOM" id="tracking"></canvas>
-    <div>{{msg_status}}</div>
+    <canvas width="320" height="320" ref="canvasDOM" id="tracking"></canvas>
    </div>
 </template>
 
@@ -34,6 +33,8 @@ export default {
               navigator.mediaDevices.getUserMedia) {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
             this.videoElement = this.$refs.camera; 
+            let fullscreen = elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
+            fullscreen.call(elem);
             //this.snapShotCanvas = this.$refs.canvas;  
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
@@ -45,8 +46,7 @@ export default {
               this.videoElement.src = window.webkitURL.createObjectURL(this.stream);
             } else {
               this.videoElement.src = this.stream;
-            } 
-            this.Log("Play Sucessfully");          
+            }        
              }
       } catch (e) {
               this.handleError(e);
@@ -83,9 +83,9 @@ export default {
   z-index: 0;
 }
 .camera {
-  display: block;
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
+position: fixed; right: 0; bottom: 0;
+min-width: 100%; min-height: 100%;
+width: auto; height: auto; z-index: -100;
+background-size: cover; 
 }
 </style>
