@@ -12,11 +12,9 @@ $ vue create webar-vue-three-ar
 
 ### Add three package 
 ```shell
-$ npm install --save three three.ar.js
+$ npm install --save three 
 + three@0.110.0
-+ three.ar.js@0.1.8
-added 2 packages from 2 contributors, updated 1 package and audited 24356 packages in 63.49s
-found 0 vulnerabilities
+added 1 package from 1 contributor and audited 24354 packages in 14.603s
 ```
 ### Add vue.config.js file to support https
 
