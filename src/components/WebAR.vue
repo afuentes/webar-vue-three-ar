@@ -1,7 +1,7 @@
 <template>
-   <div>
-       <button>Camera</button>
-       <video autoplay></video>
+   <div class="box">
+        <video ref="camera" autoPlay playsInline class="camera"></video> 
+       <button v-on:click="setupCamera">Setup</button>
        <div>{{msg_status}}</div>
    </div>
 </template>
@@ -11,12 +11,15 @@
 export default {
   name: 'WebAR',
   components: {
-    
   },
   props: {
   },
   data () {
     return {
+      constraints: {
+                    'audio': false,
+                    'video': {facingMode: 'environment'}
+      },
       msg_status: '',
       videoIn: null,
       constraints: null,
@@ -24,49 +27,69 @@ export default {
     }
   },
   mounted: function () {
-    navigator.mediaDevices.enumerateDevices()
-             .then(this.gotDevices)
-             .catch(this.handleError)
 
-    navigator.mediaDevices.getUserMedia(this.constraints) 
-          .then(this.gotStream) 
-          .catch(this.handleError)
   },
  methods: {
-  gotDevices: function(devices) {
-    this.videoIn= devices.filter( v => (v.kind=="videoinput"))
-        .filter(v => (v.label.indexOf("back")>0))
-
-        if( this.videoIn == 0 ){
-            this.msg_status = 'No devices found !!'
-            return;
+   setupCamera: async function() {  
+     try {
+           
+          if (navigator.mediaDevices && 
+              navigator.mediaDevices.getUserMedia) {
+            this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
+            this.videoElement = this.$refs.camera; 
+            //this.snapShotCanvas = this.$refs.canvas;  
+            if (this.videoElement.srcObject !== undefined) {
+               this.videoElement.srcObject = this.stream;
+            } else if (this.videoElement.mozSrcObject !== undefined) {
+               this.videoElement.mozSrcObject = this.stream;
+            } else if (window.URL.createObjectURL) {
+               this.videoElement.src = window.URL.createObjectURL(this.stream);
+            } else if (window.webkitURL) {
+              this.videoElement.src = window.webkitURL.createObjectURL(this.stream);
+            } else {
+              this.videoElement.src = this.stream;
+            } 
+            this.Log("Play Sucessfully");          
+             }
+      } catch (e) {
+              this.handleError(e);
+      } // end try
+    },
+   handleError: function(error){
+        if (error.name === 'NotAllowedError') {
+          this.Log("ERROR: you need to grant camera access permisson")
+        } else if (error.name === 'NotFoundError') {
+          this.Log("ERROR: no camera on this device")
+        } else if (error.name === 'NotSupportedError') {
+          this.message = "ERROR: secure context required (HTTPS, localhost)"
+        } else if (error.name === 'NotReadableError') {
+          this.message = "ERROR: is the camera already in use?"
+        } else if (error.name === 'OverconstrainedError') {
+          this.message = "ERROR: installed cameras are not suitable"
+        } else if (error.name === 'StreamApiNotSupportedError') {
+          this.message = "ERROR: Stream API is not supported in this browser"
+        } else {
+          this.message = error ;
         }
-        
-		if( videoIn.length > 0 ){
-			this.camBack= this.videoIn[videoIn.length-1];
-		} else {
-            this.camBack= this.videoIn[0]; 
-        }	
-			
-		this.constraints =
-			{
-				audio: false, 
-				video: {
-					deviceId: { ideal: device.deviceId },
-					width: { ideal: window.innerWidth },
-					height: { ideal: window.innerHeight }
-				}
-			};
-
-  },
-  gotStream: function(stream){
-        window.stream = stream; // make stream available to console
-        videoElement.srcObject = stream;
-  },
-  handleError: function(err){
-      this.msg_status = 'Error problems:'+error.message
-  },
+    },
+  Log: function(msg){
+      this.msg_status = this.msg_status +' '+msg 
+  }
 
   } // end methods
 }
 </script> 
+<style>
+.box{
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 0;
+}
+.camera {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+</style>
