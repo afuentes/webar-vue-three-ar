@@ -1,7 +1,7 @@
 <template>
    <div class="box">
     <video ref="camera" autoPlay playsInline class="camera"></video> 
-    <button v-on:click="setupCamera">Setup</button>
+      <canvas width="320" height="320" ref="canvasDOM" id="tracking"></canvas>
     <div>{{msg_status}}</div>
    </div>
 </template>
@@ -24,6 +24,7 @@ export default {
     }
   },
   mounted: function () {
+      this.setupCamera()
   },
  methods: {
    setupCamera: async function() {  
@@ -57,15 +58,15 @@ export default {
         } else if (error.name === 'NotFoundError') {
           this.Log("ERROR: no camera on this device")
         } else if (error.name === 'NotSupportedError') {
-          this.message = "ERROR: secure context required (HTTPS, localhost)"
+          this.Log("ERROR: secure context required (HTTPS, localhost)")
         } else if (error.name === 'NotReadableError') {
-          this.message = "ERROR: is the camera already in use?"
+          this.Log("ERROR: is the camera already in use?")
         } else if (error.name === 'OverconstrainedError') {
-          this.message = "ERROR: installed cameras are not suitable"
+          this.Log("ERROR: installed cameras are not suitable")
         } else if (error.name === 'StreamApiNotSupportedError') {
-          this.message = "ERROR: Stream API is not supported in this browser"
+          this.Log("ERROR: Stream API is not supported in this browser")
         } else {
-          this.message = error ;
+          this.Log(error);
         }
   },
   Log: function(msg){
