@@ -1,8 +1,8 @@
 <template>
    <div class="box">
-        <video ref="camera" autoPlay playsInline class="camera"></video> 
-       <button v-on:click="setupCamera">Setup</button>
-       <div>{{msg_status}}</div>
+    <video ref="camera" autoPlay playsInline class="camera"></video> 
+    <button v-on:click="setupCamera">Setup</button>
+    <div>{{msg_status}}</div>
    </div>
 </template>
 
@@ -22,12 +22,10 @@ export default {
       },
       msg_status: '',
       videoIn: null,
-      constraints: null,
       camBack:null
     }
   },
   mounted: function () {
-
   },
  methods: {
    setupCamera: async function() {  
@@ -71,7 +69,7 @@ export default {
         } else {
           this.message = error ;
         }
-    },
+  },
   Log: function(msg){
       this.msg_status = this.msg_status +' '+msg 
   }
