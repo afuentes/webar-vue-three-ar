@@ -18,7 +18,9 @@ export default {
   data () {
     return {
       msg_status: '',
-      constraints    : null,
+      videoIn: null,
+      constraints: null,
+      camBack:null
     }
   },
   mounted: function () {
@@ -32,22 +34,21 @@ export default {
   },
  methods: {
   gotDevices: function(devices) {
-    let devices= devices.filter( v => (v.kind=="videoinput"))
-    let lastDevice= devices[devices.length-1];
-        devices= devices.filter( v => (v.label.indexOf("back")>0))
-    let device= null;
-			if( devices.length > 0 ){
-				device= devices[devices.length-1];
-			} else{
-				device= lastDevice;
-			} // find back cam
-				
-			if( !device ){
-                this.msg_status = 'No devices found !!'
-				return;
-			}
+    this.videoIn= devices.filter( v => (v.kind=="videoinput"))
+        .filter(v => (v.label.indexOf("back")>0))
+
+        if( this.videoIn == 0 ){
+            this.msg_status = 'No devices found !!'
+            return;
+        }
+        
+		if( videoIn.length > 0 ){
+			this.camBack= this.videoIn[videoIn.length-1];
+		} else {
+            this.camBack= this.videoIn[0]; 
+        }	
 			
-			this.constraints =
+		this.constraints =
 			{
 				audio: false, 
 				video: {

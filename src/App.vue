@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <a-scene>
+    <WebAR/>>
   </div>
 </template>
 
 <script>
+import WebAR from '@/components/WebAR.vue'
 
 export default {
   name: 'app',
   components: {
+    WebAR
   }
 }
 </script>
