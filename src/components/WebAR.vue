@@ -1,6 +1,6 @@
 <template>
    <div>
-       <button>cam</button>
+       <button>Camera</button>
        <video autoplay></video>
        <div>{{msg_status}}</div>
    </div>
@@ -23,15 +23,15 @@ export default {
   },
   mounted: function () {
     navigator.mediaDevices.enumerateDevices()
-             .then(this.getCamBack)
-             .catch(this.handlerError);
-    navigator.mediaDevices.getUserMedia(
-          this.constraints, 
-          this.successCallback, 
-          this.errorCallback);
+             .then(this.gotDevices)
+             .catch(this.handleError)
+
+    navigator.mediaDevices.getUserMedia(this.constraints) 
+          .then(this.gotStream) 
+          .catch(this.handleError)
   },
  methods: {
-  getCamBack: function(devices) {
+  gotDevices: function(devices) {
     let devices= devices.filter( v => (v.kind=="videoinput"))
     let lastDevice= devices[devices.length-1];
         devices= devices.filter( v => (v.label.indexOf("back")>0))
@@ -58,8 +58,12 @@ export default {
 			};
 
   },
-  handlerError: function(err){
-      this.msg_status = 'Error problems:'+err
+  gotStream: function(stream){
+        window.stream = stream; // make stream available to console
+        videoElement.srcObject = stream;
+  },
+  handleError: function(err){
+      this.msg_status = 'Error problems:'+error.message
   },
 
   } // end methods
