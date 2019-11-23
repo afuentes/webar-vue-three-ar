@@ -23,16 +23,18 @@ export default {
                     'audio': false,
                     'video': {facingMode: 'environment'}
       },
-      msgStatus: '',
-       dimensions: {
+      dimensions: {
           width: 0,
           height: 0
-        }
+        },
+      msgStatus    : '',
+      canvasElement: null
+
     }
   },
   mounted: function () {
       this.setupCamera()
-      this.snapShotCanvas = this.$refs.canvas;
+      this.canvasElement = this.$refs.canvas;
   },
  methods: {
    setupCamera: async function() {  
@@ -55,13 +57,16 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-            // get size video tag element and resize canvas tag
-
+            // update draw
+            window.requestAnimationFrame(this.updateDraw);
              }
       } catch (e) {
               this.handleError(e);
       } // end try
     },
+   updateCanvas: function(){
+       this.updateCanvas.clearRect(0,0,dimensions.width,dimensions.height); 
+   },
    handleError: function(error){
         if (error.name === 'NotAllowedError') {
           this.Log("ERROR: you need to grant camera access permisson")
@@ -86,6 +91,10 @@ export default {
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
+  },
+  updateDraw: function(){
+    this.canvasElement.clearRect(0,0,this.dimensions.width,his.dimensions.height);
+    this.canvasElement.drawImage(this.videoElement,0,0,this.dimensions.width,his.dimensions.height);
   }
   } // end methods
 }
