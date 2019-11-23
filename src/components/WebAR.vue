@@ -1,7 +1,6 @@
 <template>
    <div class="box">
-    <video ref="camera" autoPlay playsInline class="camera" 
-           v-on:loadedmetadata="updateDimensions" >
+    <video ref="camera" autoPlay playsInline class="camera" >
     </video> 
     <canvas  
             ref="canvas" id="canvas">
@@ -35,6 +34,7 @@ export default {
   mounted: function () {
       this.setupCamera()
       this.canvasElement = this.$refs.canvas;
+      this.updateDimensions()
   },
  methods: {
    setupCamera: async function() {  
@@ -57,11 +57,12 @@ export default {
               this.videoElement.src = this.stream;
             }      
             // update draw
-            this.canvasElement = this.$refs.canvas;
-           let fullscreen = canvasElement.webkitRequestFullscreen || 
-                            canvasElement.mozRequestFullScreen || 
-                            canvasElement.msRequestFullscreen;
-            fullscreen.call(this.canvasElement); 
+            //this.canvasElement = this.$refs.canvas.requestFullscreen();;
+            // let fullscreen = canvasElement.webkitRequestFullscreen || 
+            //                canvasElement.mozRequestFullScreen || 
+            //                canvasElement.msRequestFullscreen ;
+            //fullscreen.call(this.canvasElement); 
+
             window.requestAnimationFrame(this.updateDraw);
              }
       } catch (e) {
@@ -88,10 +89,9 @@ export default {
           this.Log(error);
         }
   },
-  updateDimensions: function(event){
-    let videoElement = event.target
-    this.dimensions.width  = videoElement.videoWidth
-    this.dimensions.height = videoElement.videoHeight
+  updateDimensions: function(){
+    this.dimensions.width  = this.videoElement.videoWidth
+    this.dimensions.height = this.videoElement.videoHeight
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
@@ -110,21 +110,24 @@ export default {
 </script> 
 <style>
 .box{
+  margin: 0;padding: 0;
   position: relative;
   max-width: 100%;
   max-height: 100%;
   z-index: 0; 
 }
 .camera {
+   margin: 0;padding: 0;
    position: fixed; right: 0; bottom: 0;
    min-width: 100%; min-height: 100%;
    width: auto; height: auto; z-index: -100;
    background-size: cover; 
 }
-.canvas {
-   position: fixed; right: 0; bottom: 0;
-   min-width: 100%; min-height: 100%;
-   width: auto; height: auto; z-index: -100;
-   background-size: cover; 
+
+canvas {
+  margin: 0;padding: 0;
+  outline: none;
+  box-sizing: border-box;
 }
+
 </style>
