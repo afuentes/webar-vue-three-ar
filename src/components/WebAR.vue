@@ -3,7 +3,7 @@
     <video ref="camera" autoPlay playsInline class="camera" 
            v-on:loadedmetadata="updateDimensions" >
     </video> 
-    <canvas :width="dimensions.width" :height="dimensions.height" 
+    <canvas width="150" height="150" 
             ref="canvas" id="canvas">
     </canvas>
    </div>
@@ -86,8 +86,8 @@ export default {
   },
   updateDimensions: function(event){
     let videoElement = event.target
-    this.dimensions.width   = videoElement.videoWidth
-    this.dimensions.height = videoElement.videoHeight
+    this.dimensions.width   = videoElement.videoWidth - 200
+    this.dimensions.height = videoElement.videoHeight - 200
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
@@ -98,6 +98,7 @@ export default {
     ctx.fillStyle = "red";
     ctx.fillRect(10, 10, 100, 50);
     ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
+    window.requestAnimationFrame(this.updateDraw);
   }
   } // end methods
 }
