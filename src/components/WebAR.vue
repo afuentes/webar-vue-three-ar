@@ -1,7 +1,7 @@
 <template>
    <div class="box">
     <video ref="camera" autoPlay playsInline class="camera"></video> 
-    <canvas width="320" height="320" ref="canvasDOM" id="tracking"></canvas>
+    <canvas :width="canvasW" :height="canvasH" ref="canvas" id="tracking"></canvas>
    </div>
 </template>
 
@@ -19,7 +19,9 @@ export default {
                     'audio': false,
                     'video': {facingMode: 'environment'}
       },
-      msg_status: '',
+      msgStatus: '',
+      canvasW:    0,
+      canvasH:    0,
     }
   },
   mounted: function () {
@@ -33,8 +35,8 @@ export default {
               navigator.mediaDevices.getUserMedia) {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
             this.videoElement = this.$refs.camera; 
-            let fullscreen = elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
-            fullscreen.call(elem);
+            //let fullscreen = elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
+            //fullscreen.call(elem);
             //this.snapShotCanvas = this.$refs.canvas;  
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
@@ -46,7 +48,9 @@ export default {
               this.videoElement.src = window.webkitURL.createObjectURL(this.stream);
             } else {
               this.videoElement.src = this.stream;
-            }        
+            }      
+            // get size video tag element
+              
              }
       } catch (e) {
               this.handleError(e);
@@ -70,7 +74,7 @@ export default {
         }
   },
   Log: function(msg){
-      this.msg_status = this.msg_status +' '+msg 
+      this.msgStatus = this.msgStatus +' '+msg 
   }
   } // end methods
 }
