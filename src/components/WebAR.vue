@@ -1,7 +1,11 @@
 <template>
    <div class="box">
-    <video ref="camera" autoPlay playsInline class="camera" v-on:loadedmetadata="updateDimensions" ></video> 
-    <canvas :width="canvasW" :height="canvasH" ref="canvas" id="tracking"></canvas>
+    <video ref="camera" autoPlay playsInline class="camera" 
+           v-on:loadedmetadata="updateDimensions" >
+    </video> 
+    <canvas :width="dimensions.width" :height="dimensions.height" 
+            ref="canvas" id="canvas">
+    </canvas>
    </div>
 </template>
 
@@ -28,6 +32,7 @@ export default {
   },
   mounted: function () {
       this.setupCamera()
+      this.snapShotCanvas = this.$refs.canvas;
   },
  methods: {
    setupCamera: async function() {  
@@ -38,8 +43,7 @@ export default {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
             this.videoElement = this.$refs.camera; 
             //let fullscreen = elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
-            //fullscreen.call(elem);
-            //this.snapShotCanvas = this.$refs.canvas;  
+            //fullscreen.call(elem);  
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
             } else if (this.videoElement.mozSrcObject !== undefined) {
