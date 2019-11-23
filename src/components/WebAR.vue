@@ -108,7 +108,7 @@ export default {
   position: relative;
   max-width: 100%;
   max-height: 100%;
-  z-index: 0;
+  z-index: 0; 
 }
 .camera {
 position: fixed; right: 0; bottom: 0;
