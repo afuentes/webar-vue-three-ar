@@ -95,9 +95,10 @@ export default {
   updateDraw: function(){
     let ctx = document.getElementById('canvas').getContext('2d');
     ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
-    ctx.fillStyle = "red";
-    ctx.fillRect(10, 10, 100, 50);
     ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
+    // draw something
+    ctx.fillStyle = "red";
+    ctx.fillRect(10, 10, 20, 20);
     window.requestAnimationFrame(this.updateDraw);
   }
   } // end methods
