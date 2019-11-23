@@ -93,8 +93,11 @@ export default {
       this.msgStatus = this.msgStatus +' '+msg 
   },
   updateDraw: function(){
-    this.canvasElement.clearRect(0,0,this.dimensions.width,this.dimensions.height);
-    this.canvasElement.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
+    let ctx = document.getElementById('canvas').getContext('2d');
+    ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
+    ctx.fillStyle = "red";
+    ctx.fillRect(10, 10, 100, 50);
+    ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
   }
   } // end methods
 }
