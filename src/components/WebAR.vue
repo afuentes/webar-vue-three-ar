@@ -65,7 +65,7 @@ export default {
       } // end try
     },
    updateCanvas: function(){
-       this.updateCanvas.clearRect(0,0,dimensions.width,dimensions.height); 
+       this.updateCanvas.clearRect(0,0,this.dimensions.width,this.dimensions.height); 
    },
    handleError: function(error){
         if (error.name === 'NotAllowedError') {
@@ -93,8 +93,8 @@ export default {
       this.msgStatus = this.msgStatus +' '+msg 
   },
   updateDraw: function(){
-    this.canvasElement.clearRect(0,0,this.dimensions.width,his.dimensions.height);
-    this.canvasElement.drawImage(this.videoElement,0,0,this.dimensions.width,his.dimensions.height);
+    this.canvasElement.clearRect(0,0,this.dimensions.width,this.dimensions.height);
+    this.canvasElement.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
   }
   } // end methods
 }
