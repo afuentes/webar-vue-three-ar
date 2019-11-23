@@ -1,6 +1,6 @@
 <template>
    <div class="box">
-    <video ref="camera" autoPlay playsInline class="camera"></video> 
+    <video ref="camera" autoPlay playsInline class="camera" v-on:loadedmetadata="updateDimensions" ></video> 
     <canvas :width="canvasW" :height="canvasH" ref="canvas" id="tracking"></canvas>
    </div>
 </template>
@@ -20,8 +20,10 @@ export default {
                     'video': {facingMode: 'environment'}
       },
       msgStatus: '',
-      canvasW:    0,
-      canvasH:    0,
+       dimensions: {
+          width: 0,
+          height: 0
+        }
     }
   },
   mounted: function () {
@@ -49,8 +51,8 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-            // get size video tag element
-              
+            // get size video tag element and resize canvas tag
+
              }
       } catch (e) {
               this.handleError(e);
@@ -72,6 +74,11 @@ export default {
         } else {
           this.Log(error);
         }
+  },
+  updateDimensions: function(event){
+    let videoElement = event.target
+    this.dimensions.width   = videoElement.videoWidth
+    this.dimensions.height = videoElement.videoHeight
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
