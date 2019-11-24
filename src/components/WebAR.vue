@@ -2,8 +2,7 @@
    <div class="box">
     <video ref="camera" autoPlay playsInline class="camera" >
     </video> 
-    <canvas  
-            ref="canvas" id="canvas">
+    <canvas ref="canvas" id="canvas">
     </canvas>
    </div>
 </template>
@@ -22,28 +21,38 @@ export default {
                     'audio': false,
                     'video': {facingMode: 'environment'}
       },
+      canvasElement: null,
+      videoElement: null,
       dimensions: {
           width: 0,
           height: 0
         },
-      msgStatus    : '',
-      canvasElement: null
-
+      msgStatus    : null
     }
   },
   mounted: function () {
+      this.fullscreen()
       this.setupCamera()
-      this.canvasElement = this.$refs.canvas;
-      this.updateDimensions()
   },
  methods: {
+   fullscreen: function(){
+    let w = window.innerWidth; let h = window.innerHeight
+    this.videoElement  = this.$refs.camera
+    this.canvasElement = this.$refs.canvas
+    this.videoElement.width    = w
+    this.videoElement.height   = h
+    this.canvasElement.width   = w
+    this.canvasElement.height  = h
+    this.dimensions.width      = w
+    this.dimensions.height     = h
+
+   },
    setupCamera: async function() {  
      try {
            
           if (navigator.mediaDevices && 
               navigator.mediaDevices.getUserMedia) {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
-            this.videoElement = this.$refs.camera; 
  
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
@@ -56,13 +65,6 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-            // update draw
-            //this.canvasElement = this.$refs.canvas.requestFullscreen();;
-            // let fullscreen = canvasElement.webkitRequestFullscreen || 
-            //                canvasElement.mozRequestFullScreen || 
-            //                canvasElement.msRequestFullscreen ;
-            //fullscreen.call(this.canvasElement); 
-
             window.requestAnimationFrame(this.updateDraw);
              }
       } catch (e) {
@@ -89,45 +91,30 @@ export default {
           this.Log(error);
         }
   },
-  updateDimensions: function(){
-    this.dimensions.width  = this.videoElement.videoWidth
-    this.dimensions.height = this.videoElement.videoHeight
-  },
-  Log: function(msg){
-      this.msgStatus = this.msgStatus +' '+msg 
-  },
   updateDraw: function(){
     let ctx = document.getElementById('canvas').getContext('2d');
     ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     // draw something
-    ctx.fillStyle = "red";
-    ctx.fillRect(10, 10, 20, 20);
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(10, 10, 100, 300);
     window.requestAnimationFrame(this.updateDraw);
+  },
+  Log: function(msg){
+      this.msgStatus = this.msgStatus +' '+msg 
   }
+
   } // end methods
 }
 </script> 
 <style>
-.box{
-  margin: 0;padding: 0;
-  position: relative;
-  max-width: 100%;
-  max-height: 100%;
-  z-index: 0; 
-}
+
 .camera {
    margin: 0;padding: 0;
    position: fixed; right: 0; bottom: 0;
    min-width: 100%; min-height: 100%;
    width: auto; height: auto; z-index: -100;
-   background-size: cover; 
-}
 
-canvas {
-  margin: 0;padding: 0;
-  outline: none;
-  box-sizing: border-box;
 }
 
 </style>
