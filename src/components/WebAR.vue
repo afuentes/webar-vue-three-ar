@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as BABYLON from 'babylonjs';
 
 export default {
   name: 'WebAR',
@@ -23,6 +24,8 @@ export default {
       },
       canvasElement: null,
       videoElement: null,
+      engine: null,
+      scene:  null,
       dimensions: {
           width: 0,
           height: 0
@@ -33,6 +36,7 @@ export default {
   mounted: function () {
       this.fullscreen()
       this.setupCamera()
+     // this.loadEngine()
   },
  methods: {
    fullscreen: function(){
@@ -65,15 +69,13 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-            window.requestAnimationFrame(this.updateDraw);
+             window.requestAnimationFrame(this.updateDraw); // 60 FPS Frame per Second
              }
       } catch (e) {
               this.handleError(e);
       } // end try
     },
-   updateCanvas: function(){
-       this.updateCanvas.clearRect(0,0,this.dimensions.width,this.dimensions.height); 
-   },
+
    handleError: function(error){
         if (error.name === 'NotAllowedError') {
           this.Log("ERROR: you need to grant camera access permisson")
@@ -98,8 +100,35 @@ export default {
     // draw something
     ctx.fillStyle = "yellow";
     ctx.fillRect(10, 10, 100, 300);
+    // call the createScene function
+   // this.scene.render();
+    // run the render loop
+    //this.engine.runRenderLoop(function(){
+    //     this.scene.render();
+    //});
 
     window.requestAnimationFrame(this.updateDraw);
+  },
+  loadEngine: function(){
+    this.engine = new BABYLON.Engine(this.canvasElement, true, {preserveDrawingBuffer: true, stencil: true});
+    var createScene = createScene = function(){
+    // Create the scene space
+    var scene = new BABYLON.Scene(this.engine);
+
+    // Add a camera to the scene and attach it to the canvas
+    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
+    camera.attachControl(this.canvasElement, true);
+
+    // Add lights to the scene
+    new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+    new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+
+    // Add and manipulate meshes in the scene
+    BABYLON.MeshBuilder.CreateSphere("sphere", {}, scene);
+
+    return scene;
+    }
+    this.scene = createScene();
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 

@@ -10,11 +10,11 @@ $ git clone webar-vue-three-ar # empty project from github
 $ vue create webar-vue-three-ar
 ```
 
-### Add three package 
+### Add package 
 ```shell
-$ npm install --save three 
-+ three@0.110.0
-added 1 package from 1 contributor and audited 24354 packages in 14.603s
+$ npm install babylonjs --save
++ babylonjs@4.0.3
+added 1 package from 2 contributors and audited 24358 packages in 18.094s
 $ npm install --save webrtc-adapter
 + webrtc-adapter@7.3.0
 added 3 packages from 1 contributor and audited 24358 packages in 15.188s
