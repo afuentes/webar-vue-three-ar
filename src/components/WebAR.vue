@@ -92,12 +92,13 @@ export default {
         }
   },
   updateDraw: function(){
-    let ctx = document.getElementById('canvas').getContext('2d');
+    let ctx = this.canvasElement.getContext('2d');
     ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     // draw something
     ctx.fillStyle = "yellow";
     ctx.fillRect(10, 10, 100, 300);
+
     window.requestAnimationFrame(this.updateDraw);
   },
   Log: function(msg){
@@ -114,7 +115,6 @@ export default {
    position: fixed; right: 0; bottom: 0;
    min-width: 100%; min-height: 100%;
    width: auto; height: auto; z-index: -100;
-
 }
 
 </style>
