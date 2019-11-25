@@ -1,7 +1,7 @@
 <template>
    <div class="box">
    <!-- <video ref="camera" autoPlay playsInline class="camera" >
-    </video>   -->
+    </video>  --> 
     <canvas ref="canvas" id="canvas">
     </canvas>
    </div>
@@ -59,7 +59,6 @@ export default {
           if (navigator.mediaDevices && 
               navigator.mediaDevices.getUserMedia) {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
- 
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
             } else if (this.videoElement.mozSrcObject !== undefined) {
@@ -117,23 +116,48 @@ export default {
   },
  loadScene: function(){
     const _this = this
-    this.createScene = function () {
-    // Create the scene space
+    this.createScene = function() {
+    var myVideo;            // Our Webcam stream (a DOM <video>)
+    var isAssigned = false; // Is the Webcam stream assigned to material?
+
     var scene = new BABYLON.Scene(this.engine);
 
-    // Add a camera to the scene and attach it to the canvas
-    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 1, -10), scene);
+    camera.setTarget(new BABYLON.Vector3(0, 1, 0));
     camera.attachControl(this.canvasElement, true);
 
-    // Add lights to the scene
-    new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
-    new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+    var plane1 = BABYLON.Mesh.CreatePlane("plane1", 7, scene);
+    plane1.rotation.z = Math.PI;
+    plane1.position.y = 1;
 
-    // This is where you create and manipulate meshes
-    BABYLON.MeshBuilder.CreateSphere("sphere", {}, scene);
+    var videoMaterial = new BABYLON.StandardMaterial("texture1", scene);
+    videoMaterial.emissiveColor = new BABYLON.Color3(1,1,1);
+
+    // Create our video texture
+    BABYLON.VideoTexture.CreateFromWebCamAsync(scene, function (videoTexture) {
+        myVideo = videoTexture;
+        videoMaterial.diffuseTexture = myVideo;
+    },{ minWidth: this.canvasElement.width,
+        maxWidth: this.canvasElement.width, 
+        minHeight: this.dimensions.height,
+        maxHeight: this.dimensions.height,
+        });
+
+    // When there is a video stream (!=undefined),
+    // check if it's ready          (readyState == 4),
+    // before applying videoMaterial to avoid the Chrome console warning.
+    // [.Offscreen-For-WebGL-0xa957edd000]RENDER WARNING: there is no texture bound to the unit 0
+    scene.onBeforeRenderObservable.add(function () {
+        if (myVideo !== undefined && isAssigned == false) {
+            if (myVideo.video.readyState == 4) {
+                plane1.material = videoMaterial;
+                isAssigned = true;
+            }
+        }
+    });
 
     return scene;
-    };
+};
     // call the createScene function
     this.scene = this.createScene();
     // run the render loop
