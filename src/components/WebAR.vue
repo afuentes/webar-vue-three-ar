@@ -1,7 +1,7 @@
 <template>
    <div class="box">
-    <video ref="camera" autoPlay playsInline class="camera" >
-    </video> 
+   <!-- <video ref="camera" autoPlay playsInline class="camera" >
+    </video>   -->
     <canvas ref="canvas" id="canvas">
     </canvas>
    </div>
@@ -35,21 +35,23 @@ export default {
   },
   mounted: function () {
       this.fullscreen()
-      this.setupCamera()
-     // this.loadEngine()
+      //this.setupCamera()
+      this.loadEngine()
+      this.loadScene()
   },
  methods: {
    fullscreen: function(){
     let w = window.innerWidth; let h = window.innerHeight
-    this.videoElement  = this.$refs.camera
+    //this.videoElement  = this.$refs.camera
     this.canvasElement = this.$refs.canvas
-    this.videoElement.width    = w
-    this.videoElement.height   = h
+    //this.videoElement.width    = w
+    //this.videoElement.height   = h
     this.canvasElement.width   = w
     this.canvasElement.height  = h
     this.dimensions.width      = w
-    this.dimensions.height     = h
-
+    this.dimensions.height     = h,
+    this.createScene           = null,
+    this.scene                 = null
    },
    setupCamera: async function() {  
      try {
@@ -69,7 +71,7 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-             window.requestAnimationFrame(this.updateDraw); // 60 FPS Frame per Second
+             //window.requestAnimationFrame(this.updateDraw); // 60 FPS Frame per Second
              }
       } catch (e) {
               this.handleError(e);
@@ -109,9 +111,13 @@ export default {
 
     window.requestAnimationFrame(this.updateDraw);
   },
-  loadEngine: function(){
-    this.engine = new BABYLON.Engine(this.canvasElement, true, {preserveDrawingBuffer: true, stencil: true});
-    var createScene = createScene = function(){
+  loadEngine:  function(){
+    this.engine = new BABYLON.Engine(this.canvasElement, true ,{preserveDrawingBuffer: true, stencil: true});
+    this.engine.setSize(this.dimensions.width,this.dimensions.height);
+  },
+ loadScene: function(){
+    const _this = this
+    this.createScene = function () {
     // Create the scene space
     var scene = new BABYLON.Scene(this.engine);
 
@@ -123,12 +129,17 @@ export default {
     new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
     new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
 
-    // Add and manipulate meshes in the scene
+    // This is where you create and manipulate meshes
     BABYLON.MeshBuilder.CreateSphere("sphere", {}, scene);
 
     return scene;
-    }
-    this.scene = createScene();
+    };
+    // call the createScene function
+    this.scene = this.createScene();
+    // run the render loop
+    this.engine.runRenderLoop(function(){
+         _this.scene.render();
+    });
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
