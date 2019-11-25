@@ -42,7 +42,7 @@ export default {
  methods: {
    fullscreen: function(){
     let w = window.innerWidth; let h = window.innerHeight
-    //this.videoElement  = this.$refs.camera
+    this.videoElement  = this.$refs.camera
     this.canvasElement = this.$refs.canvas
     //this.videoElement.width    = w
     //this.videoElement.height   = h
@@ -59,6 +59,7 @@ export default {
           if (navigator.mediaDevices && 
               navigator.mediaDevices.getUserMedia) {
             this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
+ 
             if (this.videoElement.srcObject !== undefined) {
                this.videoElement.srcObject = this.stream;
             } else if (this.videoElement.mozSrcObject !== undefined) {
@@ -130,18 +131,19 @@ export default {
     plane1.rotation.z = Math.PI;
     plane1.position.y = 1;
 
+    new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+    var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene, false, BABYLON.Mesh.FRONTSIDE);
+    // Move the sphere upward 1/2 of its height
+    sphere.position.y = 1;
+
     var videoMaterial = new BABYLON.StandardMaterial("texture1", scene);
     videoMaterial.emissiveColor = new BABYLON.Color3(1,1,1);
 
     // Create our video texture
-    BABYLON.VideoTexture.CreateFromWebCamAsync(scene, function (videoTexture) {
+    BABYLON.VideoTexture.CreateFromWebCam(scene, function (videoTexture) {
         myVideo = videoTexture;
         videoMaterial.diffuseTexture = myVideo;
-    },{ minWidth: this.canvasElement.width,
-        maxWidth: this.canvasElement.width, 
-        minHeight: this.dimensions.height,
-        maxHeight: this.dimensions.height,
-        });
+    }, { maxWidth: 256, maxHeight: 256 });
 
     // When there is a video stream (!=undefined),
     // check if it's ready          (readyState == 4),
