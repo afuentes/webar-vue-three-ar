@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       constraints: {'audio': false, 'video': {facingMode: 'environment'} },
-ƒ     canvasElement: null,
+      canvasElement: null,
       videoElement: null,
       engine: null,
       scene:  null,
