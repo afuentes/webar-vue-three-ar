@@ -94,6 +94,9 @@ export default {
   },
   updateDraw: function(){
     let ctx = this.canvasElement.getContext('2d');
+    //if (window.WebGLRenderingContext) {
+    //let ctx_webgl = this.canvasElement.getContext('webgl');   
+    // }
     ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     // draw something
