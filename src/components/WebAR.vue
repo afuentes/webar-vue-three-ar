@@ -99,15 +99,15 @@ export default {
         }
   },
   updateDraw: function(){
-    let ctx = this.canvasElement.getContext('2d');
-    //if (window.WebGLRenderingContext) {
-    //let ctx_webgl = this.canvasElement.getContext('webgl');   
-    // }
-    ctx.clearRect(0,0,this.dimensions.width,this.dimensions.height);
-    ctx.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
+
+    if (window.WebGLRenderingContext) {
+        this.ctxWebGL = this.canvasElement.getContext('webgl').getContext('2d');
+     }
+    ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
+    ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     // draw something
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(10, 10, 100, 300);
+    ctxWebGL.fillStyle = "yellow";
+    ctxWebGL.fillRect(10, 10, 100, 300);
     window.requestAnimationFrame(this.updateDraw);
   },
   handleMouse: function(event){
