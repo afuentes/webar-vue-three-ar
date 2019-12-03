@@ -2,13 +2,19 @@
    <div class="box">
     <video ref="camera" autoPlay playsInline class="camera" >
     </video> 
-    <canvas ref="canvas" id="canvas">
+    <canvas ref="canvas" id="canvas"
+     v-on:mousedown="handleMouse" 
+     v-on:mouseup="handleMouse" 
+     v-on:mousemove="handleMouse" 
+     v-on:touchstart="handleMouse"
+     v-on:touchmove="handleMouse" 
+     v-on:touchend="handleMouse" 
+     >
     </canvas>
    </div>
 </template>
 
 <script>
-import { Engine, Camera, Layer, Scene, Texture, Tools, Vector3, VideoTexture } from "babylonjs"
 
 export default {
   name: 'WebAR',
@@ -103,6 +109,9 @@ export default {
     ctx.fillStyle = "yellow";
     ctx.fillRect(10, 10, 100, 300);
     window.requestAnimationFrame(this.updateDraw);
+  },
+  handleMouse: function(event){
+     event.preventDefault(); 
   },
   Log: function(msg){
       this.msgStatus = this.msgStatus +' '+msg 
