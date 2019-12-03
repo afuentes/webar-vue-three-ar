@@ -103,11 +103,15 @@ export default {
     if (window.WebGLRenderingContext) {
         this.ctxWebGL = this.canvasElement.getContext('webgl').getContext('2d');
      }
+     // Set ViewPort Dimension 
+     this.ctxWebGL.viewport(0, 0,this.dimensions.width ,this.dimensions.height);
+
     ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     // draw something
     ctxWebGL.fillStyle = "yellow";
     ctxWebGL.fillRect(10, 10, 100, 300);
+    
     window.requestAnimationFrame(this.updateDraw);
   },
   handleMouse: function(event){
