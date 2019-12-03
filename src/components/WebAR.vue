@@ -111,7 +111,6 @@ export default {
     // draw something
     //ctxWebGL.fillStyle = "yellow";
     //ctxWebGL.fillRect(10, 10, 100, 300);
-
     window.requestAnimationFrame(this.updateDraw);
   },
   handleMouse: function(event){
