@@ -104,7 +104,6 @@ initEngine: function(){
      }
      // Set ViewPort Dimension 
      this.ctxWebGL.viewport(0, 0,this.dimensions.width ,this.dimensions.height);
-
  },
  startAnimation: function(){
   window.requestAnimationFrame(this.updateRender); // 60 FPS Frame per Second
