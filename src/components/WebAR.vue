@@ -108,14 +108,13 @@ initEngine: function(){
  },
  startAnimation: function(){
   window.requestAnimationFrame(this.updateRender); // 60 FPS Frame per Second
-
 },
   updateRender: function(){
 
     this.ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     this.ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
-    
-    window.requestAnimationFrame(this.updateDraw);
+  
+    window.requestAnimationFrame(his.updateRender);
   },
   handleMouse: function(event){
      event.preventDefault(); 
