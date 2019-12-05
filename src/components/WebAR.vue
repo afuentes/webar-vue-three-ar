@@ -33,14 +33,15 @@ export default {
           width: 0,
           height: 0
         },
-      msgStatus    : null
+      msgStatus    : null,
+      ctxWebGL     : null
     }
   },
   mounted: function () {
       this.fullscreen()
       this.setupCamera()
-      this.loadEngine()
-      this.loadScene()
+      this.initEngine()
+      this.startAnimation()
   },
  methods: {
    fullscreen: function(){
@@ -74,7 +75,6 @@ export default {
             } else {
               this.videoElement.src = this.stream;
             }      
-             window.requestAnimationFrame(this.updateDraw); // 60 FPS Frame per Second
              }
       } catch (e) {
               this.handleError(e);
@@ -98,20 +98,22 @@ export default {
           this.Log(error);
         }
   },
-  updateDraw: function(){
-
-    if (window.WebGLRenderingContext) {
-        this.ctxWebGL = this.canvasElement.getContext('webgl').getContext('2d');
+initEngine: function(){
+      if (window.WebGLRenderingContext) {
+        this.ctxWebGL = this.canvasElement.getContext('webgl');
      }
      // Set ViewPort Dimension 
      this.ctxWebGL.viewport(0, 0,this.dimensions.width ,this.dimensions.height);
 
-    ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
-    ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
-    // draw something using WebGL 
+ },
+ startAnimation: function(){
+  window.requestAnimationFrame(this.updateRender); // 60 FPS Frame per Second
 
-    //ctxWebGL.fillStyle = "yellow";
-    //ctxWebGL.fillRect(10, 10, 100, 300);
+},
+  updateRender: function(){
+
+    this.ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
+    this.ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
     
     window.requestAnimationFrame(this.updateDraw);
   },
