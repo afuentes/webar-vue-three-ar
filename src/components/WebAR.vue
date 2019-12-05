@@ -113,7 +113,7 @@ initEngine: function(){
     this.ctxWebGL.clearRect(0,0,this.dimensions.width,this.dimensions.height);
     this.ctxWebGL.drawImage(this.videoElement,0,0,this.dimensions.width,this.dimensions.height);
   
-    window.requestAnimationFrame(his.updateRender);
+    window.requestAnimationFrame(this.updateRender);
   },
   handleMouse: function(event){
      event.preventDefault(); 
